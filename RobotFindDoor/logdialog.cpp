@@ -20,7 +20,7 @@ void LogDialog::appendDebug(QString s)
 
 void LogDialog::appendAction(QString s)
 {
-    ui->logOutput->append(QString("<p><i>%1</i></p>").arg(s));
+    ui->logOutput->append(QString("<p><b>%1</b></p>").arg(s));
 }
 
 

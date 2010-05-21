@@ -7,6 +7,10 @@ class Robot
 {
 public:
     Robot(QString _name, double _angle, double _posX, double _posY);
+    QString getName() const;
+    double getAngle() const;
+    double getPosX() const;
+    double getPosY() const;
 
 private:
     QString name;

@@ -7,3 +7,23 @@ Robot::Robot(QString _name, double _angle, double _posX, double _posY) :
 {
 
 }
+
+QString Robot::getName() const
+{
+    return name;
+}
+
+double Robot::getAngle() const
+{
+    return angle;
+}
+
+double Robot::getPosX() const
+{
+    return posX;
+}
+
+double Robot::getPosY() const
+{
+    return posY;
+}

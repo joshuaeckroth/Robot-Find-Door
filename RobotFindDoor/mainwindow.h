@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 class LogDialog;
+class Manager;
 
 namespace Ui {
     class MainWindow;
@@ -21,6 +22,7 @@ protected:
 private:
     Ui::MainWindow *ui;
     LogDialog *logDialog;
+    Manager *m;
 };
 
 #endif // MAINWINDOW_H
