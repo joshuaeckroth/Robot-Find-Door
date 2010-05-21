@@ -11,12 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->logDialogButton, SIGNAL(clicked()),
             logDialog, SLOT(show()));
-    connect(this, SIGNAL(newLogOutput(QString)),
-            logDialog, SLOT(appendLogOutput(QString)));
-
-    emit newLogOutput(QString("Line 1 of output"));
-    emit newLogOutput(QString("Line 2 of output"));
-    emit newLogOutput(QString("Line 3 of output"));
 }
 
 MainWindow::~MainWindow()

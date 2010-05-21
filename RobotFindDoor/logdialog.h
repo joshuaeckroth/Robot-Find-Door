@@ -15,7 +15,8 @@ public:
     ~LogDialog();
 
 public slots:
-    void appendLogOutput(QString s);
+    void appendDebug(QString s);
+    void appendAction(QString s);
 
 private:
     Ui::LogDialog *ui;

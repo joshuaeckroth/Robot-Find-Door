@@ -18,9 +18,6 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
-signals:
-    void newLogOutput(QString);
-
 private:
     Ui::MainWindow *ui;
     LogDialog *logDialog;

@@ -13,8 +13,14 @@ LogDialog::~LogDialog()
     delete ui;
 }
 
-void LogDialog::appendLogOutput(QString s)
+void LogDialog::appendDebug(QString s)
 {
-    ui->logOutput->append(QString("<i>%1</i>\n").arg(s));
+    ui->logOutput->append(QString("<p><pre>%1</pre></p>").arg(s));
 }
+
+void LogDialog::appendAction(QString s)
+{
+    ui->logOutput->append(QString("<p><i>%1</i></p>").arg(s));
+}
+
 
