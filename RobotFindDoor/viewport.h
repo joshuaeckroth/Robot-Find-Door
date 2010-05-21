@@ -3,7 +3,7 @@
 
 #include <QGraphicsView>
 
-class QGraphicsPixmapItem;
+class Map;
 
 class Viewport : public QGraphicsView
 {
@@ -11,8 +11,7 @@ public:
     Viewport(QWidget *parent = 0);
 
 private:
-    QGraphicsScene *scene;
-    QGraphicsPixmapItem *robot;
+    Map *map;
 };
 
 #endif // VIEWPORT_H

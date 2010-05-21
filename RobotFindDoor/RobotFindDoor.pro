@@ -10,14 +10,18 @@ SOURCES += main.cpp \
     solution.cpp \
     robotactions.cpp \
     robot.cpp \
-    manager.cpp
+    manager.cpp \
+    map.cpp \
+    mapsimple.cpp
 HEADERS += mainwindow.h \
     logdialog.h \
     viewport.h \
     robot.h \
     robotfinddoor.h \
     robotactions.h \
-    manager.h
+    manager.h \
+    map.h \
+    mapsimple.h
 FORMS += mainwindow.ui \
     logdialog.ui
 RESOURCES += resources.qrc
