@@ -3,6 +3,8 @@
 #include "logdialog.h"
 #include "manager.h"
 
+#include <ctime>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -14,9 +16,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m = Manager::instance();
     connect(m, SIGNAL(action(QString)), logDialog, SLOT(appendAction(QString)));
+    connect(m, SIGNAL(newSeed(int)), this, SLOT(newSeed(int)));
+    connect(ui->setSeedButton, SIGNAL(clicked()), this, SLOT(setSeed()));
+    connect(ui->prevMapButton, SIGNAL(clicked()), m, SLOT(prevMap()));
+    connect(ui->nextMapButton, SIGNAL(clicked()), m, SLOT(nextMap()));
+    connect(ui->goButton, SIGNAL(clicked()), m, SLOT(go()));
 
-    void solution();
-    solution();
+    int seed = std::time(NULL) % 1000;
+    qsrand(seed);
+    m->setSeed(seed);
+    m->setViewport(ui->viewport);
+    m->initialize();
 }
 
 MainWindow::~MainWindow()
@@ -34,4 +44,18 @@ void MainWindow::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+void MainWindow::setSeed()
+{
+    m->setSeed(ui->seedInput->text().toInt());
+}
+
+void MainWindow::newSeed(int seed)
+{
+    ui->seedInput->setText(QString("%1").arg(seed));
+    if(m->hasPrevSeed())
+        ui->prevMapButton->setDisabled(false);
+    else
+        ui->prevMapButton->setDisabled(true);
 }

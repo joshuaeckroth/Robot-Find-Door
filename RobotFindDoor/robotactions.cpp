@@ -8,9 +8,6 @@
 Robot& newRobot(QString name)
 {
     Manager *m = Manager::instance();
-    int seed = m->getNextSeed();
-
-    qsrand(seed);
 
     int rand_max = 0x7FFF;
     double angle = 2.0 * 3.141592653589 * (double)qrand() / rand_max;

@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     robot.cpp \
     manager.cpp \
     map.cpp \
-    mapsimple.cpp
+    mapsimple.cpp \
+    mapverticalbar.cpp
 HEADERS += mainwindow.h \
     logdialog.h \
     viewport.h \
@@ -21,7 +22,8 @@ HEADERS += mainwindow.h \
     robotactions.h \
     manager.h \
     map.h \
-    mapsimple.h
+    mapsimple.h \
+    mapverticalbar.h
 FORMS += mainwindow.ui \
     logdialog.ui
 RESOURCES += resources.qrc

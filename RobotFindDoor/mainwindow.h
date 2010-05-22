@@ -19,6 +19,10 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
+private slots:
+    void setSeed();
+    void newSeed(int);
+
 private:
     Ui::MainWindow *ui;
     LogDialog *logDialog;
