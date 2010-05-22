@@ -34,6 +34,10 @@ void Manager::setViewport(Viewport *v)
 
 void Manager::initialize()
 {
+    deleteAllRobots();
+
+    Map *oldMap = map;
+
     extern int assignment;
     switch(assignment)
     {
@@ -52,6 +56,9 @@ void Manager::initialize()
 
     if(viewport)
         viewport->setScene(map);
+
+    if(oldMap)
+        delete oldMap;
 }
 
 void Manager::addRobot(Robot *r)
@@ -75,10 +82,14 @@ bool Manager::spaceOccupied(double posX, double posY)
 
 void Manager::setSeed(int seed)
 {
-    seeds.append(seed);
-    curSeed++;
-    emit action(QString("New seed: %1").arg(seeds[curSeed]));
-    emit newSeed(seeds[curSeed]);
+    if(curSeed == -1 || seed != seeds.back()) // only update the seed if it's different
+    {
+        seeds.append(seed);
+        curSeed++;
+        emit action(QString("New seed: %1").arg(seeds[curSeed]));
+        emit newSeed(seeds[curSeed]); 
+    }
+    initialize();
 }
 
 void Manager::prevMap()
@@ -87,6 +98,7 @@ void Manager::prevMap()
         curSeed--;
     emit action(QString("New seed: %1").arg(seeds[curSeed]));
     emit newSeed(seeds[curSeed]);
+    initialize();
 }
 
 void Manager::nextMap()
@@ -100,12 +112,13 @@ void Manager::nextMap()
     }
     emit action(QString("New seed: %1").arg(seeds[curSeed]));
     emit newSeed(seeds[curSeed]);
-    deleteAllRobots();
     initialize();
 }
 
 void Manager::go()
 {
+    initialize();
+
     qsrand(seeds[curSeed]);
 
     emit action(QString("Go!"));
