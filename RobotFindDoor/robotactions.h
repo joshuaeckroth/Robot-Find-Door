@@ -5,7 +5,7 @@
 
 #include "robot.h"
 
-Robot& newRobot(QString name);
+Robot& getRobot(int index);
 double robotForward(Robot &r, double dist);
 void robotRotate(Robot &r, double angle);
 

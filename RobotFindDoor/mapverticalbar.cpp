@@ -8,6 +8,8 @@ MapVerticalBar::MapVerticalBar(int seed) :
 
 void MapVerticalBar::generate()
 {
+    newRobot("Jane");
+
     robot = new QGraphicsPixmapItem(QPixmap(":/images/robot"));
     robot->setPos(10, 10);
     addItem(robot);

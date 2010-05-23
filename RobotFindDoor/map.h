@@ -3,6 +3,8 @@
 
 #include <QGraphicsScene>
 #include <QList>
+#include <QString>
+#include "robot.h"
 
 class Door;
 
@@ -15,6 +17,8 @@ public:
     QList<Door*> getDoors() const;
 
 protected:
+    Robot& newRobot(QString name);
+
     QList<Door*> doors;
 
 private:

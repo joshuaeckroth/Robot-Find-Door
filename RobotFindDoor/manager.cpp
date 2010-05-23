@@ -14,7 +14,7 @@ Manager* Manager::instance()
 }
 
 Manager::Manager() :
-        curSeed(-1), map(NULL), viewport(NULL)
+        curSeed(-1), map(NULL), viewport(NULL), isSolutionComplete(true)
 { }
 
 int Manager::getSeed() const
@@ -59,6 +59,8 @@ void Manager::initialize()
 
     if(oldMap)
         delete oldMap;
+
+    isSolutionComplete = false;
 }
 
 void Manager::addRobot(Robot *r)
@@ -75,6 +77,14 @@ void Manager::deleteAllRobots()
         delete robots.takeFirst();
 }
 
+Robot* Manager::getRobot(int index)
+{
+    if(index < robots.size())
+        return robots[index];
+
+    return NULL;
+}
+
 bool Manager::spaceOccupied(double posX, double posY)
 {
     return false;
@@ -89,7 +99,6 @@ void Manager::setSeed(int seed)
         emit action(QString("New seed: %1").arg(seeds[curSeed]));
         emit newSeed(seeds[curSeed]); 
     }
-    initialize();
 }
 
 void Manager::prevMap()
@@ -117,12 +126,17 @@ void Manager::nextMap()
 
 void Manager::go()
 {
-    initialize();
+    if(!isSolutionComplete)
+    {
+        qsrand(seeds[curSeed]);
 
-    qsrand(seeds[curSeed]);
+        emit action(QString("Go!"));
 
-    emit action(QString("Go!"));
+        void solution();
+        solution();
 
-    void solution();
-    solution();
+        isSolutionComplete = true;
+
+        emit solutionComplete();
+    }
 }

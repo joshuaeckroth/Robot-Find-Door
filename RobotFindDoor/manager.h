@@ -20,11 +20,13 @@ public:
     void initialize();
     void addRobot(Robot *r);
     void deleteAllRobots();
+    Robot* getRobot(int index);
     bool spaceOccupied(double posX, double posY);
 
 signals:
     void action(QString);
     void newSeed(int);
+    void solutionComplete();
 
 public slots:
     void prevMap();
@@ -44,6 +46,7 @@ private:
 
     Map *map;
     Viewport *viewport;
+    bool isSolutionComplete;
 };
 
 #endif // MANAGER_H

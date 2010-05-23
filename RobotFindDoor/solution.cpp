@@ -4,8 +4,6 @@ int assignment = 2;
 
 void solution()
 {
-    Robot bob = newRobot("Bob");
-    Robot sally = newRobot("Sally");
-    Robot jane = newRobot("Jane");
+    Robot r = getRobot(0);
 
 }

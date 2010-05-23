@@ -22,6 +22,8 @@ protected:
 private slots:
     void setSeed();
     void newSeed(int);
+    void reset();
+    void solutionComplete();
 
 private:
     Ui::MainWindow *ui;

@@ -9,6 +9,8 @@ MapSimple::MapSimple(int seed) :
 
 void MapSimple::generate()
 {
+    newRobot("Bob");
+
     robot = new QGraphicsPixmapItem(QPixmap(":/images/robot"));
     robot->setPos(150, 150);
     addItem(robot);

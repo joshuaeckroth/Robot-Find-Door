@@ -17,16 +17,20 @@ MainWindow::MainWindow(QWidget *parent) :
     m = Manager::instance();
     connect(m, SIGNAL(action(QString)), logDialog, SLOT(appendAction(QString)));
     connect(m, SIGNAL(newSeed(int)), this, SLOT(newSeed(int)));
+    connect(m, SIGNAL(solutionComplete()), this, SLOT(solutionComplete()));
     connect(ui->setSeedButton, SIGNAL(clicked()), this, SLOT(setSeed()));
     connect(ui->prevMapButton, SIGNAL(clicked()), m, SLOT(prevMap()));
     connect(ui->nextMapButton, SIGNAL(clicked()), m, SLOT(nextMap()));
     connect(ui->goButton, SIGNAL(clicked()), m, SLOT(go()));
+    connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(reset()));
 
     int seed = std::time(NULL) % 1000;
     qsrand(seed);
-    m->setSeed(seed);
     m->setViewport(ui->viewport);
+    m->setSeed(seed);
     m->initialize();
+
+    ui->resetButton->setDisabled(true);
 }
 
 MainWindow::~MainWindow()
@@ -49,6 +53,7 @@ void MainWindow::changeEvent(QEvent *e)
 void MainWindow::setSeed()
 {
     m->setSeed(ui->seedInput->text().toInt());
+    m->initialize();
 }
 
 void MainWindow::newSeed(int seed)
@@ -58,4 +63,17 @@ void MainWindow::newSeed(int seed)
         ui->prevMapButton->setDisabled(false);
     else
         ui->prevMapButton->setDisabled(true);
+}
+
+void MainWindow::reset()
+{
+    m->initialize();
+    ui->resetButton->setDisabled(true);
+    ui->goButton->setDisabled(false);
+}
+
+void MainWindow::solutionComplete()
+{
+    ui->resetButton->setDisabled(false);
+    ui->goButton->setDisabled(true);
 }
