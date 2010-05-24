@@ -5,8 +5,7 @@
 #include <QList>
 #include <QString>
 #include "robot.h"
-
-class Door;
+#include "door.h"
 
 class Map : public QGraphicsScene
 {
@@ -18,8 +17,10 @@ public:
 
 protected:
     Robot& newRobot(QString name);
+    Door& newDoor(QString name);
 
     QList<Door*> doors;
+    const double mapWidth, mapHeight;
 
 private:
     int seed;

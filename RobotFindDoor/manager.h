@@ -5,6 +5,7 @@
 #include <QList>
 
 class Robot;
+class Door;
 class Map;
 class Viewport;
 
@@ -19,8 +20,10 @@ public:
     void setViewport(Viewport *v);
     void initialize();
     void addRobot(Robot *r);
-    void deleteAllRobots();
     Robot* getRobot(int index);
+    void addDoor(Door *d);
+    Door* getDoor(int index);
+
     bool spaceOccupied(double posX, double posY);
 
 signals:
@@ -39,10 +42,13 @@ private:
     Manager(Manager const&);
     Manager& operator=(Manager const&);
     static Manager* pInstance;
+    void deleteAllDoors();
+    void deleteAllRobots();
 
     QList<int> seeds;
     int curSeed;
     QList<Robot*> robots;
+    QList<Door*> doors;
 
     Map *map;
     Viewport *viewport;

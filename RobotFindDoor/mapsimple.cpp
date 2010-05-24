@@ -1,5 +1,4 @@
 #include "mapsimple.h"
-#include "door.h"
 
 #include <QGraphicsPixmapItem>
 
@@ -10,11 +9,5 @@ MapSimple::MapSimple(int seed) :
 void MapSimple::generate()
 {
     newRobot("Bob");
-
-    robot = new QGraphicsPixmapItem(QPixmap(":/images/robot"));
-    robot->setPos(150, 150);
-    addItem(robot);
-
-    Door *door = new Door;
-    doors.append(door);
+    newDoor("Main Door");
 }

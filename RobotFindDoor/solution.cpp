@@ -1,6 +1,6 @@
 #include "robotfinddoor.h"
 
-int assignment = 2;
+int assignment = 1;
 
 void solution()
 {

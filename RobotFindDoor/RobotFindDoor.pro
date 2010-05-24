@@ -14,7 +14,8 @@ SOURCES += main.cpp \
     map.cpp \
     mapsimple.cpp \
     mapverticalbar.cpp \
-    door.cpp
+    door.cpp \
+    robotimage.cpp
 HEADERS += mainwindow.h \
     logdialog.h \
     viewport.h \
@@ -25,7 +26,8 @@ HEADERS += mainwindow.h \
     map.h \
     mapsimple.h \
     mapverticalbar.h \
-    door.h
+    door.h \
+    robotimage.h
 FORMS += mainwindow.ui \
     logdialog.ui
 RESOURCES += resources.qrc

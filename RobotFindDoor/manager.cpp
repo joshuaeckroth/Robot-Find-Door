@@ -1,5 +1,6 @@
 #include "manager.h"
 #include "robot.h"
+#include "door.h"
 #include "viewport.h"
 #include "mapsimple.h"
 #include "mapverticalbar.h"
@@ -35,6 +36,7 @@ void Manager::setViewport(Viewport *v)
 void Manager::initialize()
 {
     deleteAllRobots();
+    deleteAllDoors();
 
     Map *oldMap = map;
 
@@ -52,10 +54,14 @@ void Manager::initialize()
     }
 
     qsrand(seeds[curSeed]);
+    // for some reason, several initial calls help obtain greater randomness
+    for(int i = 0; i < 20; i++)
+        qrand();
+
     map->generate();
 
     if(viewport)
-        viewport->setScene(map);
+        viewport->setMap(map);
 
     if(oldMap)
         delete oldMap;
@@ -71,6 +77,11 @@ void Manager::addRobot(Robot *r)
                 .arg(r->getPosX(), 0, 'f', 2).arg(r->getPosY(), 0, 'f', 2));
 }
 
+void Manager::addDoor(Door *d)
+{
+    doors.append(d);
+}
+
 void Manager::deleteAllRobots()
 {
     while(!robots.isEmpty())
@@ -81,6 +92,20 @@ Robot* Manager::getRobot(int index)
 {
     if(index < robots.size())
         return robots[index];
+
+    return NULL;
+}
+
+void Manager::deleteAllDoors()
+{
+    while(!doors.isEmpty())
+        delete doors.takeFirst();
+}
+
+Door* Manager::getDoor(int index)
+{
+    if(index < doors.size())
+        return doors[index];
 
     return NULL;
 }
@@ -116,7 +141,7 @@ void Manager::nextMap()
         curSeed++;
     else
     {
-        seeds.append(qrand() % 1000); // seeds are 0-999
+        seeds.append((int)((double)qrand() / RAND_MAX * 1000)); // seeds are 0-999
         curSeed++;
     }
     emit action(QString("New seed: %1").arg(seeds[curSeed]));
