@@ -154,6 +154,9 @@ void Manager::go()
     if(!isSolutionComplete)
     {
         qsrand(seeds[curSeed]);
+        // for some reason, several initial calls help obtain greater randomness
+        for(int i = 0; i < 20; i++)
+            qrand();
 
         emit action(QString("Go!"));
 
