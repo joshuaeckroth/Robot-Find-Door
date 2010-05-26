@@ -3,6 +3,8 @@
 #include "robot.h"
 #include "manager.h"
 #include <QString>
+#include <QGraphicsItemAnimation>
+#include <QTimeLine>
 
 Map::Map(int _seed) :
         QGraphicsScene(), mapWidth(500.0), mapHeight(500.0), seed(_seed)
@@ -37,10 +39,22 @@ Robot& Map::newRobot(QString name)
     }
     while(m->spaceOccupied(posX, posY));
 
-    double angle = 2.0 * 3.141592653589 * (double)qrand() / RAND_MAX;
+    double angle = 360.0 * (double)qrand() / RAND_MAX;
 
     Robot *r = new Robot(name, angle, posX, posY);
     addItem((QGraphicsItem*)r->getImage());
+
+    QTimeLine *timer = new QTimeLine(5000);
+    timer->setFrameRange(0, 100);
+    QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
+    animation->setItem((QGraphicsItem*)r->getImage());
+    animation->setTimeLine(timer);
+    for(int i = 0; i < 200; i++)
+    {
+        animation->setRotationAt(i/200.0, 360.0 * i / 200.0);
+    }
+    timer->start();
+
     m->addRobot(r);
     return *r;
 }

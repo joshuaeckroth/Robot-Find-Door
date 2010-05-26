@@ -10,7 +10,7 @@ Robot::Robot(QString _name, double _angle, double _posX, double _posY) :
     robotImage = new RobotImage;
     robotImage->setPos(posX, posY);
     QTransform transform;
-    transform.rotate(angle * 180 / 3.141592653589);
+    transform.rotate(angle);
     robotImage->setTransform(transform);
 }
 
