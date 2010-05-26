@@ -3,13 +3,23 @@
 #include "robot.h"
 #include "manager.h"
 #include <QString>
+#include <cmath>
 
 Map::Map(int _seed) :
         QGraphicsScene(), mapWidth(500.0), mapHeight(500.0), seed(_seed)
 {
     setBackgroundBrush(Qt::gray);
-    addRect(0.0, 0.0, mapWidth, mapHeight,
-            QPen(QBrush(QColor(217, 88, 41, 255)), 3),
+    // Add outside barrier.
+    addRect(0.0, 0.0, mapWidth, mapHeight,           
+            QPen(QBrush(QColor(88, 41, 217, 75)), 3),
+            QBrush(QColor(88, 41, 217, 75)));
+
+
+    // Add inside barrier:
+    // Determine the Robot's Longest Radius:
+    qreal buffer_width  = sqrt(2*(ROBOT_SIZE*ROBOT_SIZE));
+    addRect(0.0+buffer_width/2, 0.0+buffer_width/2, mapWidth-buffer_width, mapHeight-buffer_width,
+            QPen(QBrush(QColor(88, 41, 217, 75)), 3),
             QBrush(Qt::white));
 }
 
