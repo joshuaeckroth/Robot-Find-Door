@@ -28,6 +28,16 @@ bool Manager::hasPrevSeed() const
     return curSeed != 0;
 }
 
+int Manager::getCurSeed() const
+{
+    return curSeed;
+}
+
+int Manager::getNumSeeds() const
+{
+    return seeds.size();
+}
+
 void Manager::setViewport(Viewport *v)
 {
     viewport = v;
@@ -117,12 +127,18 @@ bool Manager::spaceOccupied(double posX, double posY)
 
 void Manager::setSeed(int seed)
 {
-    if(curSeed == -1 || seed != seeds.back()) // only update the seed if it's different
+    int i = seeds.indexOf(seed);
+    if(i == -1) // only add the seed if it's new
     {
         seeds.append(seed);
         curSeed++;
         emit action(QString("New seed: %1").arg(seeds[curSeed]));
         emit newSeed(seeds[curSeed]); 
+    }
+    else // otherwise switch to that seed
+    {
+        curSeed = i;
+        emit newSeed(seeds[curSeed]);
     }
 }
 
