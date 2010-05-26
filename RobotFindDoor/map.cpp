@@ -6,7 +6,7 @@
 #include <cmath>
 
 Map::Map(int _seed) :
-        QGraphicsScene(), mapWidth(500.0), mapHeight(500.0), seed(_seed)
+        QGraphicsScene(), mapWidth(MAP_WIDTH), mapHeight(MAP_HEIGHT), seed(_seed)
 {
     setBackgroundBrush(Qt::gray);
     // Add outside barrier.
