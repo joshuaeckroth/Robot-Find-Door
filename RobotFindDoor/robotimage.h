@@ -4,6 +4,9 @@
 #include <QGraphicsItem>
 #include <QPainter>
 
+// Import Defined Robot Size from main.cpp
+extern qreal ROBOT_SIZE;
+
 class RobotImage : public QGraphicsItem
 {
 public:
