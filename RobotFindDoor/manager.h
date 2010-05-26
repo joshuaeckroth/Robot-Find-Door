@@ -17,6 +17,8 @@ public:
     int getSeed() const;
     bool hasPrevSeed() const;
     void setSeed(int seed);
+    int getCurSeed() const;
+    int getNumSeeds() const;
     void setViewport(Viewport *v);
     void initialize();
     void addRobot(Robot *r);
