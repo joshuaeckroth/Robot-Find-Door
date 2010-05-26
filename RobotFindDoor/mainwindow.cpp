@@ -63,6 +63,9 @@ void MainWindow::newSeed(int seed)
         ui->prevMapButton->setDisabled(false);
     else
         ui->prevMapButton->setDisabled(true);
+    ui->mapLabel->setText(QString("Map %1/%2+")
+                          .arg(m->getCurSeed()+1)
+                          .arg(m->getNumSeeds()));
 }
 
 void MainWindow::reset()

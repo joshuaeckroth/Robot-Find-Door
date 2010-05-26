@@ -73,6 +73,13 @@
        </spacer>
       </item>
       <item>
+       <widget class="QLabel" name="mapLabel">
+        <property name="text">
+         <string>Map 1/1+</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="prevMapButton">
         <property name="text">
          <string>Prev Map</string>
