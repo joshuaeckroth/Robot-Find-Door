@@ -49,6 +49,8 @@ void Manager::setViewport(Viewport *v)
 
 void Manager::initialize()
 {
+    solutionRunner->reset();
+
     deleteAllRobots();
     deleteAllDoors();
 
@@ -144,6 +146,7 @@ void Manager::setSeed(int seed)
         curSeed = i;
         emit newSeed(seeds[curSeed]);
     }
+    initialize();
 }
 
 void Manager::prevMap()
@@ -188,8 +191,6 @@ void Manager::go()
 
         void solution();
         solution();
-
-        emit solutionComplete();
     }
 }
 

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QQueue>
 
 // Import Defined Map Sizes from main.cpp
 extern qreal MAP_WIDTH;
@@ -32,11 +33,19 @@ public:
 signals:
     void addTimeLine(QTimeLine*);
 
+private slots:
+    void animationComplete();
+
 private:
+    struct properties
+    {
+        double angle;
+        double posX;
+        double posY;
+    };
+    QQueue<struct Robot::properties> propsQueue;
+
     QString name;
-    double angle;
-    double posX;
-    double posY;
     RobotImage *robotImage;
     SolutionRunner *solutionRunner;
 

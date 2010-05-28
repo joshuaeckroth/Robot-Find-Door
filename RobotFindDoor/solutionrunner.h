@@ -17,6 +17,7 @@ public:
 
 signals:
     void solutionComplete();
+    void animationComplete();
     void firstAnimation();
 
 public slots:
@@ -30,6 +31,7 @@ private:
     QQueue<QTimeLine*> timelines;
     QMutex *mutex;
     bool running;
+    QTimeLine *currentTimeLine;
 };
 
 #endif // SOLUTIONRUNNER_H
