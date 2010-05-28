@@ -4,6 +4,7 @@
 #include "viewport.h"
 #include "mapsimple.h"
 #include "mapverticalbar.h"
+#include "solutionrunner.h"
 
 Manager* Manager::pInstance = NULL;
 
@@ -16,7 +17,10 @@ Manager* Manager::instance()
 
 Manager::Manager() :
         curSeed(-1), map(NULL), viewport(NULL), isSolutionComplete(true)
-{ }
+{
+    solutionRunner = new SolutionRunner;
+    connect(solutionRunner, SIGNAL(solutionComplete()), this, SLOT(solutionCompleted()));
+}
 
 int Manager::getSeed() const
 {
@@ -176,11 +180,21 @@ void Manager::go()
 
         emit action(QString("Go!"));
 
+        solutionRunner->reset();
+        for(int i = 0; i < robots.size(); i++)
+        {
+            robots[i]->setSolutionRunner(solutionRunner);
+        }
+
         void solution();
         solution();
 
-        isSolutionComplete = true;
-
         emit solutionComplete();
     }
+}
+
+void Manager::solutionCompleted()
+{
+    isSolutionComplete = true;
+    emit solutionComplete();
 }

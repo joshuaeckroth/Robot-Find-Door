@@ -1,6 +1,7 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
+#include <QObject>
 #include <QString>
 
 // Import Defined Map Sizes from main.cpp
@@ -10,9 +11,12 @@ extern qreal MAP_HEIGHT;
 extern qreal ROBOT_SIZE;
 
 class RobotImage;
+class SolutionRunner;
+class QTimeLine;
 
-class Robot
+class Robot : public QObject
 {
+    Q_OBJECT
 public:
     Robot(QString _name, double _angle, double _posX, double _posY);
     ~Robot();
@@ -21,6 +25,12 @@ public:
     double getPosX() const;
     double getPosY() const;
     RobotImage *getImage() const;
+    double moveForward(double dist);
+    void rotate(double angle);
+    void setSolutionRunner(SolutionRunner *s);
+
+signals:
+    void addTimeLine(QTimeLine*);
 
 private:
     QString name;
@@ -28,6 +38,7 @@ private:
     double posX;
     double posY;
     RobotImage *robotImage;
+    SolutionRunner *solutionRunner;
 
     // checkBounds():
     //    Modifies posX, posY to ensure robot is within the bounds regardless of rotated angle.

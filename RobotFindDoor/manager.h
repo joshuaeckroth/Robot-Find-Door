@@ -8,6 +8,7 @@ class Robot;
 class Door;
 class Map;
 class Viewport;
+class SolutionRunner;
 
 class Manager : public QObject
 {
@@ -38,6 +39,9 @@ public slots:
     void nextMap();
     void go();
 
+private slots:
+    void solutionCompleted();
+
 private:
     Manager();
     ~Manager() {};
@@ -54,6 +58,7 @@ private:
 
     Map *map;
     Viewport *viewport;
+    SolutionRunner *solutionRunner;
     bool isSolutionComplete;
 };
 

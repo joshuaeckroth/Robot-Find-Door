@@ -54,17 +54,6 @@ Robot& Map::newRobot(QString name)
     Robot *r = new Robot(name, angle, posX, posY);
     addItem((QGraphicsItem*)r->getImage());
 
-    QTimeLine *timer = new QTimeLine(5000);
-    timer->setFrameRange(0, 100);
-    QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
-    animation->setItem((QGraphicsItem*)r->getImage());
-    animation->setTimeLine(timer);
-    for(int i = 0; i < 200; i++)
-    {
-        animation->setRotationAt(i/200.0, 360.0 * i / 200.0);
-    }
-    timer->start();
-
     m->addRobot(r);
     return *r;
 }

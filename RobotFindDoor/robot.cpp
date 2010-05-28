@@ -1,16 +1,19 @@
 #include <QString>
 #include <QGraphicsItem>
+#include <QTimeLine>
+#include <QGraphicsItemAnimation>
 #include <cmath>
 
 #include "robot.h"
 #include "robotimage.h"
+#include "solutionrunner.h"
 
 Robot::Robot(QString _name, double _angle, double _posX, double _posY) :
         name(_name), angle(_angle), posX(_posX), posY(_posY)
 {    
     robotImage = new RobotImage;
 
-    this->checkBounds();
+    checkBounds();
 
     robotImage->setPos(posX, posY);
     QTransform transform;
@@ -46,6 +49,31 @@ double Robot::getPosY() const
 RobotImage *Robot::getImage() const
 {
     return robotImage;
+}
+
+double Robot::moveForward(double dist)
+{
+    return 0.0;
+}
+
+void Robot::rotate(double angle)
+{
+    QTimeLine *t = new QTimeLine(2000);
+    t->setFrameRange(0, 200);
+    QGraphicsItemAnimation *a = new QGraphicsItemAnimation;
+    a->setItem((QGraphicsItem*)robotImage);
+    a->setTimeLine(t);
+    for(int i = 0; i < 200; i++)
+    {
+        a->setRotationAt(i/200.0, angle * i / 200.0);
+    }
+    emit addTimeLine(t);
+}
+
+void Robot::setSolutionRunner(SolutionRunner *s)
+{
+    solutionRunner = s;
+    connect(this, SIGNAL(addTimeLine(QTimeLine*)), solutionRunner, SLOT(addTimeLine(QTimeLine*)));
 }
 
 bool Robot::checkBounds() {
