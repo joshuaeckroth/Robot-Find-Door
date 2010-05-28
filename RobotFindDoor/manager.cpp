@@ -49,10 +49,10 @@ void Manager::setViewport(Viewport *v)
 
 void Manager::initialize()
 {
-    solutionRunner->reset();
+    robots.clear();
+    doors.clear();
 
-    deleteAllRobots();
-    deleteAllDoors();
+    solutionRunner->reset();
 
     Map *oldMap = map;
 
@@ -98,24 +98,12 @@ void Manager::addDoor(Door *d)
     doors.append(d);
 }
 
-void Manager::deleteAllRobots()
-{
-    while(!robots.isEmpty())
-        delete robots.takeFirst();
-}
-
 Robot* Manager::getRobot(int index)
 {
     if(index < robots.size())
         return robots[index];
 
     return NULL;
-}
-
-void Manager::deleteAllDoors()
-{
-    while(!doors.isEmpty())
-        delete doors.takeFirst();
 }
 
 Door* Manager::getDoor(int index)
@@ -126,13 +114,10 @@ Door* Manager::getDoor(int index)
     return NULL;
 }
 
-bool Manager::spaceOccupied(double posX, double posY)
-{
-    return false;
-}
-
 void Manager::setSeed(int seed)
 {
+    if(seed > RAND_MAX) seed = RAND_MAX;
+
     int i = seeds.indexOf(seed);
     if(i == -1) // only add the seed if it's new
     {
@@ -164,7 +149,7 @@ void Manager::nextMap()
         curSeed++;
     else
     {
-        seeds.append((int)((double)qrand() / RAND_MAX * 1000)); // seeds are 0-999
+        seeds.append(qrand());
         curSeed++;
     }
     emit action(QString("New seed: %1").arg(seeds[curSeed]));

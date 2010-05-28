@@ -63,7 +63,7 @@ double Robot::getPosY() const
     return propsQueue.back().posY;
 }
 
-RobotImage *Robot::getImage() const
+RobotImage *Robot::getImage()
 {
     return robotImage;
 }

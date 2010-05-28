@@ -10,9 +10,6 @@ class MapVerticalBar : public Map
 public:
     MapVerticalBar(int seed);
     void generate();
-
-private:
-    QGraphicsPixmapItem *robot;
 };
 
 #endif // MAPVERTICALBAR_H

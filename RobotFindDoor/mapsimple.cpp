@@ -1,4 +1,5 @@
 #include "mapsimple.h"
+#include "obstacle.h"
 
 #include <QGraphicsPixmapItem>
 

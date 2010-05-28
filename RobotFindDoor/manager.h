@@ -27,8 +27,6 @@ public:
     void addDoor(Door *d);
     Door* getDoor(int index);
 
-    bool spaceOccupied(double posX, double posY);
-
 signals:
     void action(QString);
     void newSeed(int);
@@ -48,8 +46,6 @@ private:
     Manager(Manager const&);
     Manager& operator=(Manager const&);
     static Manager* pInstance;
-    void deleteAllDoors();
-    void deleteAllRobots();
 
     QList<int> seeds;
     int curSeed;

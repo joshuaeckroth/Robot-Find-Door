@@ -25,10 +25,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->goButton, SIGNAL(clicked()), this, SLOT(go()));
     connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(reset()));
 
-    int seed = std::time(NULL) % 1000;
-    qsrand(seed);
+    qsrand(std::time(NULL));
     m->setViewport(ui->viewport);
-    m->setSeed(seed);
+    m->setSeed(qrand());
     m->initialize();
 
     ui->resetButton->setDisabled(true);

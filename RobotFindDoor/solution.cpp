@@ -1,7 +1,7 @@
 #include "robotfinddoor.h"
 #include <QDebug>
 
-int assignment = 1;
+int assignment = 2;
 
 void solution()
 {
