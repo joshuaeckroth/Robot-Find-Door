@@ -31,6 +31,16 @@ Robot::Robot(QString _name, double _angle, double _posX, double _posY) :
 Robot::~Robot()
 {
     delete robotImage;
+    while(!timelines.isEmpty())
+    {
+        delete timelines.last();
+        timelines.pop_back();
+    }
+    while(!animations.isEmpty())
+    {
+        delete animations.last();
+        animations.pop_back();
+    }
 }
 
 QString Robot::getName() const
@@ -65,8 +75,6 @@ double Robot::moveForward(double dist)
 
 void Robot::rotate(double rotAngle)
 {
-    /** @todo Delete these when the time is right!! **/
-
     QTimeLine *t = new QTimeLine(2000);
     t->setFrameRange(0, 100);
     QGraphicsItemAnimation *a = new QGraphicsItemAnimation;
@@ -81,6 +89,9 @@ void Robot::rotate(double rotAngle)
     struct properties p = propsQueue.back();
     p.angle = rotAngle;
     propsQueue.enqueue(p);
+
+    timelines.push_back(t);
+    animations.push_back(a);
 
     emit addTimeLine(t);
 }

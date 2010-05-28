@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QQueue>
+#include <QVector>
 
 // Import Defined Map Sizes from main.cpp
 extern qreal MAP_WIDTH;
@@ -14,6 +15,7 @@ extern qreal ROBOT_SIZE;
 class RobotImage;
 class SolutionRunner;
 class QTimeLine;
+class QGraphicsItemAnimation;
 
 class Robot : public QObject
 {
@@ -44,6 +46,9 @@ private:
         double posY;
     };
     QQueue<struct Robot::properties> propsQueue;
+
+    QVector<QTimeLine*> timelines;
+    QVector<QGraphicsItemAnimation*> animations;
 
     QString name;
     RobotImage *robotImage;
