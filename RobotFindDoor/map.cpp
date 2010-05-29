@@ -15,18 +15,13 @@ Map::Map(int _seed) :
         QGraphicsScene(), mapWidth(MAP_WIDTH), mapHeight(MAP_HEIGHT), seed(_seed)
 {
     setBackgroundBrush(Qt::gray);
-    // Add outside barrier.
-    //addRect(0.0, 0.0, mapWidth, mapHeight,
-    //        QPen(QBrush(QColor(88, 41, 217, 75)), 3),
-    //        QBrush(QColor(88, 41, 217, 75)));
+    qreal buffer_width  = sqrt(2*(ROBOT_SIZE*ROBOT_SIZE));
 
-
-    // Add inside barrier:
-    // Determine the Robot's Longest Radius:
-    //qreal buffer_width  = sqrt(2*(ROBOT_SIZE*ROBOT_SIZE));
-    //addRect(0.0+buffer_width/2, 0.0+buffer_width/2, mapWidth-buffer_width, mapHeight-buffer_width,
-    //        QPen(QBrush(QColor(88, 41, 217, 75)), 3),
-    //        QBrush(Qt::white));
+    QGraphicsRectItem border(0.0, 0.0, mapWidth, mapHeight);
+    QGraphicsRectItem inside(0.0+buffer_width/2, 0.0+buffer_width/2, mapWidth-buffer_width, mapHeight-buffer_width);
+    QPainterPath shape = border.shape();
+    shape = shape.subtracted(inside.shape());
+    addPath(shape, QPen(QColor(88, 41, 217, 75)), QBrush(QColor(88, 41, 217, 75)));
 }
 
 Map::~Map()
@@ -117,7 +112,8 @@ void Map::addObstacle(Obstacle *o)
 
 bool Map::collidesWithAny(QGraphicsItem *item)
 {
-    QList<QGraphicsItem*> collisions = collidingItems(item);
+    //QList<QGraphicsItem*> collisions = collidingItems(item);
 
-    return !collisions.empty();
+    //return !collisions.empty();
+    return false;
 }

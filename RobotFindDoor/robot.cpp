@@ -20,7 +20,7 @@ Robot::Robot(QString _name, double _angle, double _posX, double _posY) :
     p.posY = _posY;
     propsQueue.enqueue(p);
 
-    checkBounds();
+    //checkBounds();
 
     robotImage->setPos(_posX, _posY);
     QTransform transform;
