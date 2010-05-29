@@ -70,7 +70,37 @@ RobotImage *Robot::getImage()
 
 double Robot::moveForward(double dist)
 {
-    return 0.0;
+    double pi = 3.14159265;
+    // angle is in degrees...
+    double angle = this->getAngle();
+
+    QTimeLine *t = new QTimeLine(2000);
+    t->setFrameRange(0, 100);
+    QGraphicsItemAnimation *a = new QGraphicsItemAnimation;
+    a->setItem((QGraphicsItem*)robotImage);
+    a->setTimeLine(t);
+
+    double old_x = this->getPosX(), old_y = this->getPosY(),
+           new_x = old_x, new_y = old_y;
+    for(int i = 0; i <= 100; i++)
+    {
+        new_x += dist*sin(angle*pi/180)/100;
+        new_y -= dist*cos(angle*pi/180)/100;
+        a->setPosAt(i/100.0, QPointF(new_x, new_y));
+    }
+
+    // update robot's positions inside the class:
+    struct properties p = propsQueue.back();
+    p.posX = new_x;
+    p.posY = new_y;
+    propsQueue.enqueue(p);
+
+    timelines.push_back(t);
+    animations.push_back(a);
+
+    emit addTimeLine(t);
+
+    return sqrt(pow(new_x-old_x,2.0)+pow(new_y-old_y,2.0));
 }
 
 void Robot::rotate(double rotAngle)

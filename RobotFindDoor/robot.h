@@ -27,7 +27,7 @@ public:
     double getAngle() const;
     double getPosX() const;
     double getPosY() const;
-    RobotImage *getImage();
+    RobotImage *getImage();   
     double moveForward(double dist);
     void rotate(double angle);
     void setSolutionRunner(SolutionRunner *s);
