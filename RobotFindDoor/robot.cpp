@@ -137,26 +137,3 @@ void Robot::animationComplete()
 {
     propsQueue.dequeue();
 }
-
-bool Robot::checkBounds() {
-    qreal _posX = propsQueue.back().posX, _posY = propsQueue.back().posY;
-    qreal posX = _posX, posY = _posY;
-
-    // Keep the robot within X bounds:
-    if (posX > MAP_WIDTH-sqrt(2*(ROBOT_SIZE*ROBOT_SIZE)))
-        posX = MAP_WIDTH-sqrt(2*(ROBOT_SIZE*ROBOT_SIZE));
-    else if (posX < sqrt(2*(ROBOT_SIZE*ROBOT_SIZE))) posX = sqrt(2*(ROBOT_SIZE*ROBOT_SIZE));
-
-    // Keep the robot within Y bounds:
-    if (posY > MAP_HEIGHT-sqrt(2*(ROBOT_SIZE*ROBOT_SIZE))) posY = MAP_HEIGHT-sqrt(2*(ROBOT_SIZE*ROBOT_SIZE));
-    else if (posY < sqrt(2*(ROBOT_SIZE*ROBOT_SIZE))) posY = sqrt(2*(ROBOT_SIZE*ROBOT_SIZE));
-
-    struct properties p = propsQueue.dequeue();
-    p.posX = posX;
-    p.posY = posY;
-    propsQueue.enqueue(p);
-
-    // If (X,Y) was modified, return false.
-    if (_posX == posX && _posY == posY) return true;
-    else return false;
-}

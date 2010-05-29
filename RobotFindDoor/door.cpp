@@ -2,9 +2,11 @@
 #include <QPainter>
 #include <QString>
 
+extern double ROBOT_SIZE;
+
 Door::Door(QString _name, double _posX, double _posY) :
         QGraphicsItem(0), name(_name), posX(_posX), posY(_posY),
-        rect(QRectF(posX - 10, posY - 10, 20, 20))
+        rect(QRectF(posX - ROBOT_SIZE/2.0, posY - ROBOT_SIZE/2.0, ROBOT_SIZE, ROBOT_SIZE))
 { }
 
 QString Door::getName() const

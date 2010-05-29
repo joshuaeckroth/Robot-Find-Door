@@ -11,9 +11,11 @@
 #include <QList>
 #include <cmath>
 
+extern double ROBOT_SIZE;
+
 Map::Map(int _seed) :
-        QGraphicsScene(), mapWidth(MAP_WIDTH), mapHeight(MAP_HEIGHT), seed(_seed)
-{
+        QGraphicsScene(), mapWidth(500.0+sqrt(2*(ROBOT_SIZE*ROBOT_SIZE))), mapHeight(500.0+sqrt(2*(ROBOT_SIZE*ROBOT_SIZE))), seed(_seed)
+{    
     setBackgroundBrush(Qt::gray);
     qreal buffer_width  = sqrt(2*(ROBOT_SIZE*ROBOT_SIZE));
 
@@ -76,20 +78,24 @@ Door *Map::newDoor(QString name)
         int side = (qrand() % 4);
         double posX = mapWidth * (double)qrand() / RAND_MAX;
         double posY = mapHeight * (double)qrand() / RAND_MAX;
+        if (posX > mapWidth/2) posX -= ROBOT_SIZE/2.0;
+        else posX += ROBOT_SIZE/2.0;
+        if (posY > mapHeight/2) posY -= ROBOT_SIZE/2.0;
+        else posY += ROBOT_SIZE/2.0;
 
         switch(side)
         {
         case 0: // left
-            d = new Door(name, 0.0, posY);
+            d = new Door(name, ROBOT_SIZE/2.0, posY);
             break;
         case 1: // right
-            d = new Door(name, mapWidth, posY);
+            d = new Door(name, mapWidth-ROBOT_SIZE/2.0, posY);
             break;
         case 2: // top
-            d = new Door(name, posX, 0.0);
+            d = new Door(name, posX, ROBOT_SIZE/2.0);
             break;
         case 3: // bottom
-            d = new Door(name, posX, mapHeight);
+            d = new Door(name, posX, mapHeight-ROBOT_SIZE/2.0);
             break;
         default: ;
         }

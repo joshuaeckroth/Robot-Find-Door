@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     door.cpp \
     robotimage.cpp \
     solutionrunner.cpp \
-    obstacle.cpp
+    obstacle.cpp \
+    dooractions.cpp
 HEADERS += mainwindow.h \
     logdialog.h \
     viewport.h \
@@ -31,7 +32,9 @@ HEADERS += mainwindow.h \
     door.h \
     robotimage.h \
     solutionrunner.h \
-    obstacle.h
+    obstacle.h \
+    config.h \
+    dooractions.h
 FORMS += mainwindow.ui \
     logdialog.ui
 RESOURCES += resources.qrc
