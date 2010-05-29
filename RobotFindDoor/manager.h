@@ -8,6 +8,7 @@ class Robot;
 class Door;
 class Map;
 class Viewport;
+class SolutionRunner;
 
 class Manager : public QObject
 {
@@ -26,8 +27,6 @@ public:
     void addDoor(Door *d);
     Door* getDoor(int index);
 
-    bool spaceOccupied(double posX, double posY);
-
 signals:
     void action(QString);
     void newSeed(int);
@@ -38,14 +37,15 @@ public slots:
     void nextMap();
     void go();
 
+private slots:
+    void solutionCompleted();
+
 private:
     Manager();
     ~Manager() {};
     Manager(Manager const&);
     Manager& operator=(Manager const&);
     static Manager* pInstance;
-    void deleteAllDoors();
-    void deleteAllRobots();
 
     QList<int> seeds;
     int curSeed;
@@ -54,6 +54,7 @@ private:
 
     Map *map;
     Viewport *viewport;
+    SolutionRunner *solutionRunner;
     bool isSolutionComplete;
 };
 

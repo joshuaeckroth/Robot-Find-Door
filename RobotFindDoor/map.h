@@ -4,14 +4,18 @@
 #include <QGraphicsScene>
 #include <QList>
 #include <QString>
-#include "robot.h"
-#include "door.h"
+
 
 // Import Defined Map Sizes from main.cpp
 extern qreal MAP_WIDTH;
 extern qreal MAP_HEIGHT;
 // Import Defined Robot Size from main.cpp
 extern qreal ROBOT_SIZE;
+
+class Robot;
+class Door;
+class Obstacle;
+class QGraphicsItem;
 
 class Map : public QGraphicsScene
 {
@@ -22,10 +26,14 @@ public:
     QList<Door*> getDoors() const;
 
 protected:
-    Robot& newRobot(QString name);
-    Door& newDoor(QString name);
+    Robot *newRobot(QString name);
+    Door *newDoor(QString name);
+    void addObstacle(Obstacle *o);
+    bool collidesWithAny(QGraphicsItem *item);
 
     QList<Door*> doors;
+    QList<Robot*> robots;
+    QList<Obstacle*> obstacles;
     const double mapWidth, mapHeight;
 
 private:

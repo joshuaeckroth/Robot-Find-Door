@@ -4,6 +4,7 @@
 #include "viewport.h"
 #include "mapsimple.h"
 #include "mapverticalbar.h"
+#include "solutionrunner.h"
 
 Manager* Manager::pInstance = NULL;
 
@@ -16,7 +17,10 @@ Manager* Manager::instance()
 
 Manager::Manager() :
         curSeed(-1), map(NULL), viewport(NULL), isSolutionComplete(true)
-{ }
+{
+    solutionRunner = new SolutionRunner;
+    connect(solutionRunner, SIGNAL(solutionComplete()), this, SLOT(solutionCompleted()));
+}
 
 int Manager::getSeed() const
 {
@@ -45,8 +49,10 @@ void Manager::setViewport(Viewport *v)
 
 void Manager::initialize()
 {
-    deleteAllRobots();
-    deleteAllDoors();
+    robots.clear();
+    doors.clear();
+
+    solutionRunner->reset();
 
     Map *oldMap = map;
 
@@ -92,24 +98,12 @@ void Manager::addDoor(Door *d)
     doors.append(d);
 }
 
-void Manager::deleteAllRobots()
-{
-    while(!robots.isEmpty())
-        delete robots.takeFirst();
-}
-
 Robot* Manager::getRobot(int index)
 {
     if(index < robots.size())
         return robots[index];
 
     return NULL;
-}
-
-void Manager::deleteAllDoors()
-{
-    while(!doors.isEmpty())
-        delete doors.takeFirst();
 }
 
 Door* Manager::getDoor(int index)
@@ -120,13 +114,10 @@ Door* Manager::getDoor(int index)
     return NULL;
 }
 
-bool Manager::spaceOccupied(double posX, double posY)
-{
-    return false;
-}
-
 void Manager::setSeed(int seed)
 {
+    if(seed > RAND_MAX) seed = RAND_MAX;
+
     int i = seeds.indexOf(seed);
     if(i == -1) // only add the seed if it's new
     {
@@ -140,6 +131,7 @@ void Manager::setSeed(int seed)
         curSeed = i;
         emit newSeed(seeds[curSeed]);
     }
+    initialize();
 }
 
 void Manager::prevMap()
@@ -157,7 +149,7 @@ void Manager::nextMap()
         curSeed++;
     else
     {
-        seeds.append((int)((double)qrand() / RAND_MAX * 1000)); // seeds are 0-999
+        seeds.append(qrand());
         curSeed++;
     }
     emit action(QString("New seed: %1").arg(seeds[curSeed]));
@@ -176,11 +168,19 @@ void Manager::go()
 
         emit action(QString("Go!"));
 
+        solutionRunner->reset();
+        for(int i = 0; i < robots.size(); i++)
+        {
+            robots[i]->setSolutionRunner(solutionRunner);
+        }
+
         void solution();
         solution();
-
-        isSolutionComplete = true;
-
-        emit solutionComplete();
     }
+}
+
+void Manager::solutionCompleted()
+{
+    isSolutionComplete = true;
+    emit solutionComplete();
 }

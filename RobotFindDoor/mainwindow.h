@@ -22,6 +22,7 @@ protected:
 private slots:
     void setSeed();
     void newSeed(int);
+    void go();
     void reset();
     void solutionComplete();
 

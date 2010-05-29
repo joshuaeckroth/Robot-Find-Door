@@ -22,12 +22,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->prevMapButton, SIGNAL(clicked()), m, SLOT(prevMap()));
     connect(ui->nextMapButton, SIGNAL(clicked()), m, SLOT(nextMap()));
     connect(ui->goButton, SIGNAL(clicked()), m, SLOT(go()));
+    connect(ui->goButton, SIGNAL(clicked()), this, SLOT(go()));
     connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(reset()));
 
-    int seed = std::time(NULL) % 1000;
-    qsrand(seed);
+    qsrand(std::time(NULL));
     m->setViewport(ui->viewport);
-    m->setSeed(seed);
+    m->setSeed(qrand());
     m->initialize();
 
     ui->resetButton->setDisabled(true);
@@ -53,7 +53,6 @@ void MainWindow::changeEvent(QEvent *e)
 void MainWindow::setSeed()
 {
     m->setSeed(ui->seedInput->text().toInt());
-    m->initialize();
 }
 
 void MainWindow::newSeed(int seed)
@@ -66,6 +65,14 @@ void MainWindow::newSeed(int seed)
     ui->mapLabel->setText(QString("Map %1/%2+")
                           .arg(m->getCurSeed()+1)
                           .arg(m->getNumSeeds()));
+    ui->resetButton->setDisabled(true);
+    ui->goButton->setDisabled(false);
+}
+
+void MainWindow::go()
+{
+    ui->resetButton->setDisabled(false);
+    ui->goButton->setDisabled(true);
 }
 
 void MainWindow::reset()
