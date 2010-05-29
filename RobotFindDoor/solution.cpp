@@ -7,7 +7,7 @@
 int assignment = 2;
 
 void solution()
-{
+{    
     Robot *r = getRobot(0);
     Door *d = getDoor(0);
 
@@ -17,12 +17,14 @@ void solution()
     double dx = d->getPosX(), dy = d->getPosY();
 
     double dist = sqrt(pow(x-dx,2.0)+pow(y-dy,2.0));
-    double theta = (atan((y-dy)/(x-dx))-pi/2)*180/pi;
+    double theta = atan((y-dy)/(x-dx))*180/pi;
+
+    if (x>dx) theta=180-theta;
+    else theta *= -1;
 
     //17711
     //5411
     //28515 - WTF?
-    if (theta < 0) theta += 180;
 
     qDebug() << "Robot(" << x << ", " << y << ")\nDoor(" << dx << ", " << dy << ")\nAction: " << dist << "@ " << theta << "deg\n";
 

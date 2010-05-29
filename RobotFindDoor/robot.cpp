@@ -103,8 +103,9 @@ double Robot::moveForward(double dist)
     return sqrt(pow(new_x-old_x,2.0)+pow(new_y-old_y,2.0));
 }
 
-void Robot::rotate(double rotAngle)
+void Robot::rotate(double rotAngle)        
 {
+    rotAngle = -(rotAngle)+90.0;
     QTimeLine *t = new QTimeLine(2000);
     t->setFrameRange(0, 100);
     QGraphicsItemAnimation *a = new QGraphicsItemAnimation;
