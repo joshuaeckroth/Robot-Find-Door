@@ -25,7 +25,7 @@ public:
     void addRobot(Robot *r);
     Robot* getRobot(int index);
     void addDoor(Door *d);
-    Door* getDoor(int index);
+    Door* getDoor(int index);    
 
 signals:
     void action(QString);

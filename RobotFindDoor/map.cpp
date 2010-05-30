@@ -56,13 +56,15 @@ Robot *Map::newRobot(QString name)
         posX = mapWidth * (double)qrand() / RAND_MAX;
         posY = mapHeight * (double)qrand() / RAND_MAX;
         r = new Robot(name, angle, posX, posY);
+        r->setMap(this);
     }
-    while(collidesWithAny((QGraphicsItem*)r->getImage()));
+    while(r->collides());
 
     addItem((QGraphicsItem*)r->getImage());
 
     m->addRobot(r);
     robots.append(r);
+    r->setMap(this);
     return r;
 }
 
@@ -86,21 +88,21 @@ Door *Map::newDoor(QString name)
         switch(side)
         {
         case 0: // left
-            d = new Door(name, ROBOT_SIZE/2.0, posY);
+            d = new Door(name, ROBOT_SIZE/2.0, posY, "LEFT");
             break;
         case 1: // right
-            d = new Door(name, mapWidth-ROBOT_SIZE/2.0, posY);
+            d = new Door(name, mapWidth-ROBOT_SIZE/2.0, posY, "RIGHT");
             break;
         case 2: // top
-            d = new Door(name, posX, ROBOT_SIZE/2.0);
+            d = new Door(name, posX, ROBOT_SIZE/2.0, "TOP");
             break;
         case 3: // bottom
-            d = new Door(name, posX, mapHeight-ROBOT_SIZE/2.0);
+            d = new Door(name, posX, mapHeight-ROBOT_SIZE/2.0, "BOTTOM");
             break;
         default: ;
         }
     }
-    while(collidesWithAny(d));
+    while(false);
 
     addItem((QGraphicsItem*)d);
 
@@ -116,10 +118,7 @@ void Map::addObstacle(Obstacle *o)
     obstacles.append(o);
 }
 
-bool Map::collidesWithAny(QGraphicsItem *item)
+QList<Obstacle*> Map::getObstacles() const
 {
-    //QList<QGraphicsItem*> collisions = collidingItems(item);
-
-    //return !collisions.empty();
-    return false;
+    return obstacles;
 }

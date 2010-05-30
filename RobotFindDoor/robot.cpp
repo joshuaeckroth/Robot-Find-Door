@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <cmath>
 
+#include "map.h"
 #include "robot.h"
 #include "robotimage.h"
 #include "solutionrunner.h"
@@ -19,8 +20,6 @@ Robot::Robot(QString _name, double _angle, double _posX, double _posY) :
     p.posX = _posX;
     p.posY = _posY;
     propsQueue.enqueue(p);
-
-    //checkBounds();
 
     robotImage->setPos(_posX, _posY);
     QTransform transform;
@@ -87,13 +86,26 @@ double Robot::moveForward(double dist)
         new_x += dist*sin(angle*pi/180)/100;
         new_y -= dist*cos(angle*pi/180)/100;
         a->setPosAt(i/100.0, QPointF(new_x, new_y));
-    }
 
-    // update robot's positions inside the class:
-    struct properties p = propsQueue.back();
-    p.posX = new_x;
-    p.posY = new_y;
-    propsQueue.enqueue(p);
+        struct properties p = propsQueue.back();
+        p.posX = new_x;
+        p.posY = new_y;
+        propsQueue.enqueue(p);
+
+        if (this->collides())
+        {
+            // Undo the last move:
+            new_x -= dist*sin(angle*pi/180)/100;
+            new_y += dist*cos(angle*pi/180)/100;
+            a->setPosAt(i/100.0, QPointF(new_x, new_y));
+            struct properties p = propsQueue.back();
+            p.posX = new_x;
+            p.posY = new_y;
+            propsQueue.enqueue(p);
+            // Quit:
+            break;
+        }
+    }
 
     timelines.push_back(t);
     animations.push_back(a);
@@ -113,13 +125,25 @@ void Robot::rotate(double rotAngle)
     a->setTimeLine(t);
     for(int i = 0; i <= 100; i++)
     {
-        a->setRotationAt(i/100.0, ((rotAngle - propsQueue.back().angle) * i / 100.0)
-                         + propsQueue.back().angle);
-    }
+        struct properties p = propsQueue.back();
+        p.angle = ((rotAngle - propsQueue.back().angle) * i / 100.0)
+                  + propsQueue.back().angle;
+        propsQueue.enqueue(p);
 
-    struct properties p = propsQueue.back();
-    p.angle = rotAngle;
-    propsQueue.enqueue(p);
+        a->setRotationAt(i/100.0, propsQueue.back().angle);
+
+        if (this->collides())
+        {
+            // Undo the last rotate:
+            struct properties p = propsQueue.back();
+            p.angle = (-(rotAngle - propsQueue.back().angle) * i / 100.0)
+                      + propsQueue.back().angle;
+            propsQueue.enqueue(p);
+            a->setRotationAt(i/100.0, propsQueue.back().angle);
+            // Quit:
+            break;
+        }
+    }
 
     timelines.push_back(t);
     animations.push_back(a);
@@ -137,4 +161,29 @@ void Robot::setSolutionRunner(SolutionRunner *s)
 void Robot::animationComplete()
 {
     propsQueue.dequeue();
+}
+
+void Robot::setMap(Map *m)
+{
+    myMap = m;
+}
+
+bool Robot::collides()
+{
+    //test with seed: 5609
+    bool detected = false;
+
+    QRectF infoRect = this->getImage()->boundingRect();
+    QRectF myRect = QRectF(this->getPosX()-ROBOT_SIZE/2.0, this->getPosY()-ROBOT_SIZE/2.0, infoRect.width(), infoRect.height());
+    QList<Obstacle*> Obstacles = myMap->getObstacles();
+    for (int i=0;i<Obstacles.size();i++)
+    {
+        if (  myRect.intersects(Obstacles[i]->boundingRect())  )
+        {
+            detected = true;
+            break;
+        }
+
+    }
+    return detected;
 }

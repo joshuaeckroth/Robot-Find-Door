@@ -6,9 +6,7 @@
 #include <QQueue>
 #include <QVector>
 
-// Import Defined Map Sizes from main.cpp
-extern qreal MAP_WIDTH;
-extern qreal MAP_HEIGHT;
+#include "map.h"
 // Import Defined Robot Size from main.cpp
 extern qreal ROBOT_SIZE;
 
@@ -26,11 +24,13 @@ public:
     QString getName() const;
     double getAngle() const;
     double getPosX() const;
-    double getPosY() const;
+    double getPosY() const;    
     RobotImage *getImage();   
     double moveForward(double dist);
     void rotate(double angle);
     void setSolutionRunner(SolutionRunner *s);
+    void setMap(Map *m);
+    bool collides();
 
 signals:
     void addTimeLine(QTimeLine*);
@@ -45,6 +45,7 @@ private:
         double posX;
         double posY;
     };
+    Map *myMap;
     QQueue<struct Robot::properties> propsQueue;
 
     QVector<QTimeLine*> timelines;

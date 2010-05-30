@@ -1,5 +1,7 @@
 #include "mapverticalbar.h"
+#include "map.h"
 #include "obstacle.h"
+#include "robot.h"
 #include <QGraphicsPixmapItem>
 
 MapVerticalBar::MapVerticalBar(int seed) :
@@ -8,7 +10,9 @@ MapVerticalBar::MapVerticalBar(int seed) :
 
 void MapVerticalBar::generate()
 {
-    newRobot("Jane");
+    Robot *r = newRobot("Jane");
+    // Need help here...
+    //r->setMap(this->Map);
     newDoor("Door 1");
 
     bool top = (qrand() % 2 == 0);
@@ -29,6 +33,7 @@ void MapVerticalBar::generate()
         else
             o = new Obstacle(QRectF(posX, posY + 50.0, 5.0, mapHeight - posY - 50.0));
     }
-    while(o == NULL || collidesWithAny(o));
+    // So this can be fixed:
+    while(o == NULL || false);//r->collides());
     addObstacle(o);
 }
