@@ -1,1 +1,12 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="reset">icons/reset.png</file>
+        <file alias="go">icons/go.png</file>
+        <file alias="log">icons/log.png</file>
+        <file alias="previous">icons/previous.png</file>
+        <file alias="next">icons/next.png</file>
+        <file alias="set-seed">icons/set-seed.png</file>
+        <file alias="logo">icons/logo.png</file>
+        <file alias="save">icons/save.png</file>
+    </qresource>
+</RCC>
