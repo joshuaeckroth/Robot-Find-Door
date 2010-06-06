@@ -8,13 +8,6 @@ extern double ROBOT_SIZE;
 
 int assignment = 2;
 
-double fix_theta(Robot *r, Door *d, double theta)
-{
-    if (r->getPosX() > d->getPosX()) theta=180-theta;
-    else theta *= -1;
-    return theta;
-}
-
 void solution()
 {    
     Robot *r = getRobot(0);
@@ -24,16 +17,10 @@ void solution()
     double pi = 3.14159265;
     double x = r->getPosX(), y = r->getPosY();
     double dx = d->getPosX(), dy = d->getPosY();
-
     double dist = sqrt(pow(x-dx,2.0)+pow(y-dy,2.0));
-    double theta = fix_theta(r, d, atan((y-dy)/(x-dx))*180/pi);
-
-    //qDebug() << "Robot(" << x << ", " << y << ")\nDoor(" << dx << ", " << dy << ")\nAction: " << dist << "@ " << theta << "deg\n";
+    double theta = -atan2(dy-y, dx-x) * 180/pi;
 
     r->rotate(theta);
-
-    //Seed 2479 is a good test.
-    //Seed 2161 is an interesting one too.
 
     bool try_bottom = true;
     // Infinite loops cause the trials to not display at all...
@@ -62,14 +49,11 @@ void solution()
         x = r->getPosX();
         y = r->getPosY();
         dist = sqrt(pow(x-dx,2.0)+pow(y-dy,2.0));
-        theta = fix_theta(r, d, atan((y-dy)/(x-dx))*180/pi);
+        theta = -atan2(dy-y, dx-x) * 180/pi;
 
         r->rotate(theta);
         try_bottom = !try_bottom;
-        //r->moveForward(dist);
     }
     if (enterDoor(r, d)) qDebug("Success!");
     else qDebug("Whoopsie!");
-    // Seed 13003 rendered success??
-
 }

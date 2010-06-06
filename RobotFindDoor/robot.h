@@ -19,7 +19,7 @@ class Robot : public QObject
 {
     Q_OBJECT
 public:
-    Robot(QString _name, double _angle, double _posX, double _posY);
+    Robot(QString _name, double _angle, double _posX, double _posY, Map *_map);
     ~Robot();
     QString getName() const;
     double getAngle() const;
@@ -29,8 +29,6 @@ public:
     double moveForward(double dist);
     void rotate(double angle);
     void setSolutionRunner(SolutionRunner *s);
-    void setMap(Map *m);
-    bool collides();
 
 signals:
     void addTimeLine(QTimeLine*);
@@ -45,7 +43,6 @@ private:
         double posX;
         double posY;
     };
-    Map *myMap;
     QQueue<struct Robot::properties> propsQueue;
 
     QVector<QTimeLine*> timelines;
@@ -54,11 +51,7 @@ private:
     QString name;
     RobotImage *robotImage;
     SolutionRunner *solutionRunner;
-
-    // checkBounds():
-    //    Modifies posX, posY to ensure robot is within the bounds regardless of rotated angle.
-    //    returns true if no adjustments were required.
-    bool checkBounds();
+    Map *map;
 };
 
 #endif // ROBOT_H

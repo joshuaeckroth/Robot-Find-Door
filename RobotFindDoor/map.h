@@ -13,6 +13,7 @@ extern qreal ROBOT_SIZE;
 class Robot;
 class Door;
 class QGraphicsItem;
+class QGraphicsRectItem;
 
 class Map : public QGraphicsScene
 {
@@ -22,6 +23,7 @@ public:
     virtual void generate() = 0;
     QList<Door*> getDoors() const;
     QList<Obstacle*> getObstacles() const;
+    bool collides(const QGraphicsItem* o, bool moving) const;
 
 protected:
     Robot *newRobot(QString name);
@@ -32,6 +34,8 @@ protected:
     QList<Robot*> robots;
     QList<Obstacle*> obstacles;
     const double mapWidth, mapHeight;
+
+    QGraphicsRectItem *border, *inside;
 
 private:
     int seed;

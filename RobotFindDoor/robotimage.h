@@ -10,6 +10,8 @@ extern qreal ROBOT_SIZE;
 class RobotImage : public QGraphicsItem
 {
 public:
+    RobotImage();
+    RobotImage(const RobotImage& r);
     virtual QRectF boundingRect() const;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                        QWidget *widget);

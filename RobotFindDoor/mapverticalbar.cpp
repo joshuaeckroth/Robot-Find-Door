@@ -10,9 +10,7 @@ MapVerticalBar::MapVerticalBar(int seed) :
 
 void MapVerticalBar::generate()
 {
-    Robot *r = newRobot("Jane");
-    // Need help here...
-    //r->setMap(this->Map);
+    newRobot("Jane");
     newDoor("Door 1");
 
     bool top = (qrand() % 2 == 0);
@@ -25,15 +23,14 @@ void MapVerticalBar::generate()
         posX = mapWidth * (double)qrand() / RAND_MAX;
         posY = mapHeight * (double)qrand() / RAND_MAX;
 
-        if(posY < 100.0) continue;
-        if(posY > mapHeight - 100.0) continue;
+        if(posY < 200.0) continue;
+        if(posY > mapHeight - 200.0) continue;
 
         if(top)
-            o = new Obstacle(QRectF(posX, 0.0, 5.0, posY - 50.0)); // save space for robot
+            o = new Obstacle(QRectF(posX, 0.0, 10.0, posY - 50.0)); // save space for robot
         else
-            o = new Obstacle(QRectF(posX, posY + 50.0, 5.0, mapHeight - posY - 50.0));
+            o = new Obstacle(QRectF(posX, posY + 50.0, 10.0, mapHeight - posY - 50.0));
     }
-    // So this can be fixed:
-    while(o == NULL || false);//r->collides());
+    while(o == NULL || collides(o, false));
     addObstacle(o);
 }

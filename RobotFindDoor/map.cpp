@@ -9,6 +9,9 @@
 #include <QGraphicsItem>
 #include <QTimeLine>
 #include <QList>
+#include <QDebug>
+#include <QRectF>
+#include <QPainterPath>
 #include <cmath>
 
 extern double ROBOT_SIZE;
@@ -16,14 +19,17 @@ extern double ROBOT_SIZE;
 Map::Map(int _seed) :
         QGraphicsScene(), mapWidth(500.0+sqrt(2*(ROBOT_SIZE*ROBOT_SIZE))), mapHeight(500.0+sqrt(2*(ROBOT_SIZE*ROBOT_SIZE))), seed(_seed)
 {    
-    setBackgroundBrush(Qt::gray);
-    qreal buffer_width  = sqrt(2*(ROBOT_SIZE*ROBOT_SIZE));
+    qreal buffer_width = sqrt(2*(ROBOT_SIZE*ROBOT_SIZE));
 
-    QGraphicsRectItem border(0.0, 0.0, mapWidth, mapHeight);
-    QGraphicsRectItem inside(0.0+buffer_width/2, 0.0+buffer_width/2, mapWidth-buffer_width, mapHeight-buffer_width);
-    QPainterPath shape = border.shape();
-    shape = shape.subtracted(inside.shape());
+    border = new QGraphicsRectItem(0.0, 0.0, mapWidth, mapHeight);
+    inside = new QGraphicsRectItem(0.0+buffer_width/2, 0.0+buffer_width/2, mapWidth-buffer_width, mapHeight-buffer_width);
+    QPainterPath shape = border->shape();
+    shape = shape.subtracted(inside->shape());
+
+    setBackgroundBrush(Qt::gray);
     addPath(shape, QPen(QColor(88, 41, 217, 75)), QBrush(QColor(88, 41, 217, 75)));
+
+    addItem(inside);
 }
 
 Map::~Map()
@@ -34,6 +40,8 @@ Map::~Map()
         delete robots.takeFirst();
     while(!obstacles.isEmpty())
         delete obstacles.takeFirst();
+    delete border;
+    delete inside;
 }
 
 QList<Door*> Map::getDoors() const
@@ -55,16 +63,14 @@ Robot *Map::newRobot(QString name)
 
         posX = mapWidth * (double)qrand() / RAND_MAX;
         posY = mapHeight * (double)qrand() / RAND_MAX;
-        r = new Robot(name, angle, posX, posY);
-        r->setMap(this);
+        r = new Robot(name, angle, posX, posY, this);
     }
-    while(r->collides());
+    while(collides(r->getImage(), false));
 
     addItem((QGraphicsItem*)r->getImage());
 
     m->addRobot(r);
     robots.append(r);
-    r->setMap(this);
     return r;
 }
 
@@ -102,7 +108,7 @@ Door *Map::newDoor(QString name)
         default: ;
         }
     }
-    while(false);
+    while(collides(d, false));
 
     addItem((QGraphicsItem*)d);
 
@@ -114,11 +120,43 @@ Door *Map::newDoor(QString name)
 void Map::addObstacle(Obstacle *o)
 {
     addItem((QGraphicsItem*)o);
-
     obstacles.append(o);
 }
 
 QList<Obstacle*> Map::getObstacles() const
 {
     return obstacles;
+}
+
+bool Map::collides(const QGraphicsItem *o, bool moving) const
+{
+    qreal buffer_width = sqrt(2*(ROBOT_SIZE*ROBOT_SIZE))/2.0;
+    QRectF r = o->boundingRect();
+    if(r.topLeft().x() < -buffer_width || r.bottomRight().x() > (mapWidth+buffer_width)
+       || r.topLeft().y() < -buffer_width || r.topRight().y() > (mapHeight+buffer_width))
+        return true;
+
+    for(int i = 0; i < obstacles.size(); i++)
+    {
+        if(o->collidesWithItem(obstacles[i]))
+            return true;
+    }
+
+    for(int i = 0; i < robots.size(); i++)
+    {
+        QPainterPath p = robots[i]->getImage()->mapToParent(robots[i]->getImage()->shape());
+        if(o->collidesWithPath(p))
+            return true;
+    }
+
+    if(!moving)
+    {
+        for(int i = 0; i < doors.size(); i++)
+        {
+            if(o->collidesWithItem(doors[i]))
+                return true;
+        }
+    }
+
+    return false;
 }
